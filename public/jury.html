@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Vote Jury</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <style>
+    body {
+      text-align: center;
+      font-family: sans-serif;
+      padding-top: 50px;
+    }
+
+    .btn {
+      font-size: 30px;
+      padding: 20px;
+      margin: 20px;
+      width: 120px;
+      border-radius: 10px;
+      cursor: pointer;
+      border: none;
+    }
+
+    .green { background: lime; }
+    .red { background: red; color: white; }
+
+    .buzzer {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      font-weight: bold;
+      border: none;
+      margin: 10px;
+      color: white;
+      font-size: 14px;
+    }
+
+    .buzzer.green { background: green; }
+    .buzzer.red { background: darkred; }
+
+    select {
+      font-size: 20px;
+      padding: 10px;
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Vote du Jury</h2>
+
+  <label for="select">Choisir un candidat :</label><br>
+  <select id="select">
+    <option value="c1">Candidat 1</option>
+    <option value="c2">Candidat 2</option>
+    <option value="c3">Candidat 3</option>
+    <option value="c4">Candidat 4</option>
+  </select><br><br>
+
+  <button class="btn green" onclick="vote('OUI')">OUI</button>
+  <button class="btn red" onclick="vote('NON')">NON</button><br><br>
+
+  <button class="buzzer green" onclick="vote('SUPER_OUI')">BUZZER +6</button>
+  <button class="buzzer red" onclick="vote('SUPER_NON')">BUZZER -6</button>
+
+  <script>
+    const socket = io();
+
+    function vote(type) {
+      const candidat = document.getElementById("select").value;
+      socket.emit('vote', { candidat, type });
+    }
+  </script>
+
+</body>
+</html>
